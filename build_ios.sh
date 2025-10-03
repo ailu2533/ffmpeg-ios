@@ -6,7 +6,6 @@
 --disable-arm64e \
 --disable-i386 \
 --disable-x86-64 \
---disable-arm64-simulator \
 --disable-x86-64-mac-catalyst \
 --disable-arm64-mac-catalyst \
 --enable-lame \
