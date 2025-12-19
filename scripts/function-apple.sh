@@ -437,6 +437,21 @@ create_ffmpeg_framework() {
     fi
 
     build_info_plist "${FFMPEG_LIB_FRAMEWORK_RESOURCE_PATH}/Info.plist" "${FFMPEG_LIB}" "com.arthenica.ffmpegkit.${CAPITAL_CASE_FFMPEG_LIB_NAME}" "${FFMPEG_LIB_VERSION}" "${FFMPEG_LIB_VERSION}" "${ARCHITECTURE_VARIANT}"
+    
+    # CREATE MODULE MAP
+    local MODULE_MAP_DIR="${FFMPEG_LIB_FRAMEWORK_PATH}/Modules"
+    if [[ ${ARCHITECTURE_VARIANT} -eq ${ARCH_VAR_MAC_CATALYST} ]] || [[ ${ARCHITECTURE_VARIANT} -eq ${ARCH_VAR_MACOS} ]]; then
+        MODULE_MAP_DIR="${FFMPEG_LIB_FRAMEWORK_PATH}/Versions/A/Modules"
+    fi
+    mkdir -p "${MODULE_MAP_DIR}" 1>>"${BASEDIR}"/build.log 2>&1
+    
+    cat >"${MODULE_MAP_DIR}/module.modulemap" <<EOF
+framework module ${FFMPEG_LIB} {
+  umbrella header "${FFMPEG_LIB#lib}.h"
+  export *
+  module * { export * }
+}
+EOF
 
     echo -e "DEBUG: ${FFMPEG_LIB} framework built for $(get_apple_architecture_variant "${ARCHITECTURE_VARIANT}") platform successfully\n" 1>>"${BASEDIR}"/build.log 2>&1
   done
