@@ -658,6 +658,29 @@ overwrite_file "${BASEDIR}"/src/ffmpeg/libavutil/x86/timer.h "${FFMPEG_LIBRARY_P
 overwrite_file "${BASEDIR}"/src/ffmpeg/libavutil/arm/timer.h "${FFMPEG_LIBRARY_PATH}"/include/libavutil/arm/timer.h 1>>"${BASEDIR}"/build.log 2>&1
 overwrite_file "${BASEDIR}"/src/ffmpeg/libavutil/aarch64/timer.h "${FFMPEG_LIBRARY_PATH}"/include/libavutil/aarch64/timer.h 1>>"${BASEDIR}"/build.log 2>&1
 
+create_module_map() {
+  local FRAMEWORK_NAME="$1"
+  local MODULE_MAP_PATH="${FFMPEG_LIBRARY_PATH}/framework/${FRAMEWORK_NAME}.framework/Modules"
+  mkdir -p "${MODULE_MAP_PATH}" 1>>"${BASEDIR}"/build.log 2>&1
+  
+  cat >"${MODULE_MAP_PATH}/module.modulemap" <<EOF
+framework module ${FRAMEWORK_NAME} {
+  umbrella header "${FRAMEWORK_NAME}.h"
+  export *
+  module * { export * }
+}
+EOF
+}
+
+create_module_map "libavcodec"
+create_module_map "libavdevice"
+create_module_map "libavfilter"
+create_module_map "libavformat"
+create_module_map "libavutil"
+create_module_map "libswresample"
+create_module_map "libswscale"
+
+
 
 if [ $? -eq 0 ]; then
   echo "ok"

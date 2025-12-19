@@ -13,4 +13,10 @@
 --enable-opus \
 --enable-libogg \
 --enable-opencore-amr \
---enable-libass
+--enable-libass \
+--enable-ios-videotoolbox \
+--enable-ios-avfoundation \
+--enable-ios-audiotoolbox \
+--enable-ios-zlib \
+--enable-ios-bzip2 \
+--enable-ios-libiconv
